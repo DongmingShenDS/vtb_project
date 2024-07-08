@@ -178,7 +178,7 @@ def preprocess_function(examples):
     # Preprocess the dataset and filter out examples that are longer than args.max_length
 train_dataset = train_dataset.map(
         preprocess_function,
-        batched=True,
+        # batched=True,
         num_proc=4,
     )
 train_dataset = train_dataset.filter(
@@ -187,7 +187,7 @@ train_dataset = train_dataset.filter(
     )
 test_dataset = test_dataset.map(
         preprocess_function,
-        batched=True,
+        # batched=True,
         num_proc=4,
     )
 test_dataset = test_dataset.filter(
