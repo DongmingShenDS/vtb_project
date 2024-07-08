@@ -159,17 +159,21 @@ num_proc = 1 # Can adjust to be higher if you have more processors.
 
 
 def preprocess_function(example):
-    chosen_str = example["Prompt"] + " " + example["Chosen"]
-    rejected_str = example["Prompt"] + " " + example["Reject"]
-    tokenized_chosen = tokenizer(chosen_str)
-    tokenized_rejected = tokenizer(rejected_str)
-    
-    example["input_ids_chosen"] = tokenized_chosen["input_ids"]
-    example["attention_mask_chosen"] = tokenized_chosen["attention_mask"]
-    example["input_ids_rejected"] = tokenized_rejected["input_ids"]
-    example["attention_mask_rejected"] = tokenized_rejected["attention_mask"]
-
-    return example
+    if example["Prompt"] is None or example["Chosen"] is None or example["Reject"] is None:
+            return None
+        
+        chosen_str = example["Prompt"] + " " + example["Chosen"]
+        rejected_str = example["Prompt"] + " " + example["Reject"]
+        
+        tokenized_chosen = tokenizer(chosen_str, truncation=True, padding='max_length', max_length=script_args.max_length)
+        tokenized_rejected = tokenizer(rejected_str, truncation=True, padding='max_length', max_length=script_args.max_length)
+        
+        return {
+            "input_ids_chosen": tokenized_chosen["input_ids"],
+            "attention_mask_chosen": tokenized_chosen["attention_mask"],
+            "input_ids_rejected": tokenized_rejected["input_ids"],
+            "attention_mask_rejected": tokenized_rejected["attention_mask"],
+        }
     # Preprocess the dataset and filter out examples that are longer than args.max_length
 train_dataset = train_dataset.map(
         preprocess_function,
