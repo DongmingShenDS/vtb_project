@@ -107,6 +107,7 @@ script_args = parser.parse_args_into_dataclasses()[0]
 
 # # Load the human stack-exchange-paired dataset for tuning the reward model.
 train_dataset = pd.read_csv('train_set.csv')
+print(train_dataset)
 test_dataset = pd.read_csv('test_set.csv')
 # # if script_args.train_subset > 0:
 # #     train_dataset = train_dataset.select(range(script_args.train_subset))
