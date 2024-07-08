@@ -179,7 +179,7 @@ def preprocess_function(examples):
 train_dataset = train_dataset.map(
         preprocess_function,
         # batched=True,
-        num_proc=4,
+        # num_proc=4,
     )
 train_dataset = train_dataset.filter(
         lambda x: len(x["input_ids_chosen"]) <= training_args.max_length
@@ -188,7 +188,7 @@ train_dataset = train_dataset.filter(
 test_dataset = test_dataset.map(
         preprocess_function,
         # batched=True,
-        num_proc=4,
+        # num_proc=4,
     )
 test_dataset = test_dataset.filter(
         lambda x: len(x["input_ids_chosen"]) <= training_args.max_length
