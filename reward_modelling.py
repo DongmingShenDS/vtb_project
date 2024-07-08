@@ -164,7 +164,6 @@ def preprocess_function(example):
         
         chosen_str = example["Prompt"] + " " + example["Chosen"]
         rejected_str = example["Prompt"] + " " + example["Reject"]
-        
         tokenized_chosen = tokenizer(chosen_str, truncation=True, padding='max_length', max_length=script_args.max_length)
         tokenized_rejected = tokenizer(rejected_str, truncation=True, padding='max_length', max_length=script_args.max_length)
         
