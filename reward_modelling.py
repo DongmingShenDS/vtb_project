@@ -163,6 +163,7 @@ def preprocess_function(examples):
             "input_ids_rejected": [],
             "attention_mask_rejected": []
     }
+    print(examples)
     for prompt, chosen, rejected in zip(examples["Prompt"], examples["Chosen"], examples["Reject"]):
         chosen_str = prompt + " " + chosen
         rejected_str = prompt + " " + rejected
