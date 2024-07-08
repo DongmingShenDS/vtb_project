@@ -157,26 +157,18 @@ model.config.use_cache = not script_args.gradient_checkpointing
 num_proc = 1 # Can adjust to be higher if you have more processors.
 
 
-def preprocess_function(examples):
-    new_examples = {
-            "input_ids_chosen": [],
-            "attention_mask_chosen": [],
-            "input_ids_rejected": [],
-            "attention_mask_rejected": []
-    }
-    print(examples)
-    for prompt, chosen, rejected in zip(examples["Prompt"], examples["Chosen"], examples["Reject"]):
-        chosen_str = prompt + " " + chosen
-        rejected_str = prompt + " " + rejected
-        tokenized_chosen = tokenizer(chosen_str)
-        tokenized_rejected = tokenizer(rejected_str)
-        new_examples["input_ids_chosen"].append(tokenized_chosen["input_ids"])
-        new_examples["attention_mask_chosen"].append(tokenized_chosen["attention_mask"])
-        new_examples["input_ids_rejected"].append(tokenized_rejected["input_ids"])
-        new_examples["attention_mask_rejected"].append(tokenized_rejected["attention_mask"])
-        
-    return new_examples
+def preprocess_function(example):
+    chosen_str = example["Prompt"] + " " + example["Chosen"]
+    rejected_str = example["Prompt"] + " " + example["Reject"]
+    tokenized_chosen = tokenizer(chosen_str)
+    tokenized_rejected = tokenizer(rejected_str)
+    
+    example["input_ids_chosen"] = tokenized_chosen["input_ids"]
+    example["attention_mask_chosen"] = tokenized_chosen["attention_mask"]
+    example["input_ids_rejected"] = tokenized_rejected["input_ids"]
+    example["attention_mask_rejected"] = tokenized_rejected["attention_mask"]
 
+    return example
     # Preprocess the dataset and filter out examples that are longer than args.max_length
 train_dataset = train_dataset.map(
         preprocess_function,
