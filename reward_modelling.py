@@ -4,7 +4,7 @@ import evaluate
 import numpy as np
 import torch
 import torch.nn as nn
-from datasets import load_dataset
+from datasets import load_dataset, Dataset
 from transformers import (
     AutoModelForSequenceClassification,
     AutoTokenizer,
